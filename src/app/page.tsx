@@ -26,9 +26,9 @@ export default function App() {
   }
 
   return (
-    <main className="mx-auto h-screen max-w-7xl">
-      <div className="flex flex-col md:flex-row h-full items-center justify-between">
-        <div className="w-full max-w-lg">
+    <main className="mx-4 py-10 lg:py-0 lg:mx-auto h-screen max-w-7xl">
+      <div className="flex flex-col lg:flex-row lg:h-full items-center justify-between">
+        <div className="w-full max-w-lg text-center lg:text-left">
           <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight text-gray-900 lg:text-5xl">
             EVM Wallet Generator
           </h1>
@@ -41,8 +41,10 @@ export default function App() {
             Generate
           </Button>
         </div>
-        <div className="w-full ml-0 lg:ml-16">
-          <h2 className="text-lg font-semibold">Result</h2>
+        <div className="w-full mt-6 lg:mt-0 ml-0 lg:ml-16">
+          <h2 className="text-lg text-center lg:text-left font-semibold">
+            Result
+          </h2>
           <div>
             <Label htmlFor="walletAddress">Wallet Address</Label>
             <div className="flex w-full items-center space-x-2">
