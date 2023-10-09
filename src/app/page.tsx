@@ -35,7 +35,7 @@ export default function HomePage() {
 
   return (
     <>
-      <div className="max-w-3xl mx-auto py-28">
+      <div className="max-w-3xl mx-4 lg:mx-auto py-28">
         <div className="flex flex-col items-center">
           <div className="text-center">
             <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight text-gray-900">
