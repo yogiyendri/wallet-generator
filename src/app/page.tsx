@@ -1,21 +1,17 @@
 "use client";
-import React, { useState } from "react";
-import { ethers } from "ethers";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
+import { copyText } from "@/lib/copy";
+import { ethers } from "ethers";
+import * as React from "react";
 
-export default function App() {
-  const [address, setAddress] = useState("");
-  const [privateKey, setPrivateKey] = useState("");
-  const [pharse, setPharse] = useState("");
+export default function HomePage() {
+  const [address, setAddress] = React.useState("");
+  const [privateKey, setPrivateKey] = React.useState("");
+  const [pharse, setPharse] = React.useState("");
   const { toast } = useToast();
-
-  function copyText(entryText: string) {
-    navigator.clipboard.writeText(entryText);
-    return console.log("copied");
-  }
 
   function generateWallet() {
     const getmnemonic: any = ethers.HDNodeWallet.createRandom().mnemonic;
@@ -25,73 +21,91 @@ export default function App() {
     setPharse(getWallet.mnemonic?.phrase ?? "");
   }
 
+  const downloadTxtFile = () => {
+    const texts = [address, privateKey, pharse];
+    const file = new Blob([texts.join("\n")], { type: "text/plain" });
+
+    const element = document.createElement("a");
+    element.href = URL.createObjectURL(file);
+    element.download = address + ".txt";
+
+    document.body.appendChild(element);
+    element.click();
+  };
+
   return (
-    <main className="mx-4 py-10 lg:py-0 lg:mx-auto h-screen max-w-7xl">
-      <div className="flex flex-col lg:flex-row lg:h-full items-center justify-between">
-        <div className="w-full max-w-lg text-center lg:text-left">
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight text-gray-900 lg:text-5xl">
-            EVM Wallet Generator
-          </h1>
-          <p className="mt-4 text-sm text-muted-foreground">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt
-            maxime facere placeat natus inventore impedit in voluptatum hic
-            animi est.
-          </p>
+    <>
+      <div className="max-w-3xl mx-auto py-28">
+        <div className="flex flex-col items-center">
+          <div className="text-center">
+            <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight text-gray-900">
+              EVM Wallet Generator
+            </h1>
+            <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt
+              maxime facere placeat natus inventore impedit in voluptatum hic
+              animi est.
+            </p>
+          </div>
           <Button onClick={generateWallet} className="mt-6">
             Generate
           </Button>
         </div>
-        <div className="w-full mt-6 lg:mt-0 ml-0 lg:ml-16">
-          <h2 className="text-lg text-center lg:text-left font-semibold">
-            Result
-          </h2>
-          <div>
-            <Label htmlFor="walletAddress">Wallet Address</Label>
-            <div className="flex w-full items-center space-x-2">
-              <Input id="walletAddress" readOnly value={address} />
-              <Button
-                onClick={() => {
-                  copyText(address);
-                  toast({ description: "Copied to clipboard." });
-                }}
-                variant={"secondary"}
-              >
-                Copy
-              </Button>
+        <div className="mt-12">
+          <div className="space-y-1">
+            <div>
+              <Label htmlFor="walletAddress">Wallet Address</Label>
+              <div className="flex w-full items-center space-x-2">
+                <Input id="walletAddress" readOnly value={address} />
+                <Button
+                  variant={"secondary"}
+                  onClick={() => {
+                    copyText(address);
+                    toast({ description: "Copied to clipboard." });
+                  }}
+                >
+                  Copy
+                </Button>
+              </div>
+            </div>
+            <div>
+              <Label htmlFor="privateKey">Private Key</Label>
+              <div className="flex w-full items-center space-x-2">
+                <Input id="privateKey" readOnly value={privateKey} />
+                <Button
+                  variant={"secondary"}
+                  onClick={() => {
+                    copyText(privateKey);
+                    toast({ description: "Copied to clipboard." });
+                  }}
+                >
+                  Copy
+                </Button>
+              </div>
+            </div>
+            <div>
+              <Label htmlFor="mnemonic">Mnemonic</Label>
+              <div className="flex w-full items-center space-x-2">
+                <Input id="mnemonic" readOnly value={pharse} />
+                <Button
+                  variant={"secondary"}
+                  onClick={() => {
+                    copyText(pharse);
+                    toast({ description: "Copied to clipboard." });
+                  }}
+                >
+                  Copy
+                </Button>
+              </div>
             </div>
           </div>
-          <div>
-            <Label htmlFor="privateKey">Private Key</Label>
-            <div className="flex w-full items-center space-x-2">
-              <Input id="privateKey" readOnly value={privateKey} />
-              <Button
-                onClick={() => {
-                  copyText(privateKey);
-                  toast({ description: "Copied to clipboard." });
-                }}
-                variant={"secondary"}
-              >
-                Copy
-              </Button>
-            </div>
-          </div>
-          <div>
-            <Label htmlFor="mnemonic">Mnemonic</Label>
-            <div className="flex w-full items-center space-x-2">
-              <Input id="mnemonic" readOnly value={pharse} />
-              <Button
-                onClick={() => {
-                  copyText(pharse);
-                  toast({ description: "Copied to clipboard." });
-                }}
-                variant={"secondary"}
-              >
-                Copy
-              </Button>
-            </div>
+          <div className="flex justify-center">
+            <Button onClick={downloadTxtFile} className="mt-8">
+              Download as txt
+            </Button>
           </div>
         </div>
       </div>
-    </main>
+    </>
   );
 }
